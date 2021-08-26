@@ -1,0 +1,18 @@
+#!/bin/sh
+
+foamCleanTutorials
+# run background mesh
+blockMesh | tee blockMesh.log
+checkMesh | tee checkMesh_block.log
+
+## to extract features if needed
+surfaceFeatureExtract | surfaceFeatureExtract.log
+
+# run snappyHexMesh 
+decomposePar | tee decomposePar.log
+mpirun -np 16 snappyHexMesh -overwrite -parallel | tee snappyHexMesh.log
+reconstructParMesh -constant | tee reconstructParMesh.log
+rm -rf processor*
+checkMesh | tee checkMesh_snappy.log
+
+#------------------------------------------------------------------------------
