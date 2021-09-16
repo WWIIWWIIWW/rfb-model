@@ -26,5 +26,5 @@ paraview foam.foam
 ```
 
 Authors
-- Catalina Pino - Research Associate in Flow Battery Modelling
+- Catalina Pino - Research Associate in Flow Battery Modelling at Imperial College London
 - Felipe Huerta - 4th year PhD Student at Imperial College London
