@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     pisoFoam;
+application     myPisoFoam;
 
 startFrom       startTime;
 
@@ -23,11 +23,11 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         1e-2;
+endTime         1e-3;
 
-deltaT          1e-5;
+deltaT          1e-6;
 
-writeControl    runTime;
+writeControl    adjustableRunTime;
 
 writeInterval   1e-4;
 
@@ -44,6 +44,12 @@ timeFormat      general;
 timePrecision   6;
 
 runTimeModifiable true;
+
+adjustTimeStep	yes;
+
+masDeltaT	1e-4;
+
+maxCo		0.5;
 
 
 // ************************************************************************* //
