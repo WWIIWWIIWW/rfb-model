@@ -11,46 +11,60 @@ FoamFile
     format      ascii;
     class       dictionary;
     location    "system";
-    object      controlDict;
+    object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     myPisoFoam;
+solvers
+{
+    p
+    {
+        solver          GAMG;
+        tolerance       1e-08;
+        relTol          0.01;
+        smoother        GaussSeidel;
+    }
 
-startFrom       latestTime;
+    pFinal
+    {
+        $p;
+        tolerance       1e-08;
+        relTol          0;
+    }
 
-startTime       0;
+    "(U|k|epsilon|omega|R|nuTilda)"
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        tolerance       1e-06;
+        relTol          0;
+    }
 
-stopAt          endTime;
+    "(U|k|epsilon|omega|R|nuTilda)Final"
+    {
+        $U;
+        tolerance       1e-05;
+        relTol          0;
+    }
 
-endTime         1e-2;
+}
 
-deltaT          1e-6;
+PIMPLE
+{
+    nOuterCorrectors 1;
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 0;
+    pRefCell        0;
+    pRefValue       0;
+}
 
-writeControl    adjustableRunTime;
-
-writeInterval   1e-4;
-
-purgeWrite      0;
-
-writeFormat     ascii;
-
-writePrecision  6;
-
-writeCompression off;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep	yes;
-
-maxDeltaT       1e-4;
-
-maxCo           0.9;
-
+PISO
+{
+   nCorrectors 2;
+   nNonOrthogonalCorrectors 0;
+   pRefCell	0;
+   pRefValue	0;
+}
 
 
 // ************************************************************************* //
