@@ -9,51 +9,48 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volVectorField;
-    object      U;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 -1 0 0 0 0];
+application     myPisoFoam;
 
-internalField   uniform (0 0 0);
+startFrom       latestTime;
 
-boundaryField
-{
-    // #includeEtc "caseDicts/setConstraintTypes"
-    
-    inlet
-    {
-        type            fixedValue;
-        value           uniform (0 0 1.67); // $internalField;
-    }
-    outlet
-    {
-        //type            pressureInletOutletVelocity;
-        //value           $internalField;
-        type              zeroGradient;
-    }
+startTime       0;
 
-    top
-    {
-        type            noSlip;
-    }
+stopAt          endTime;
 
-    bottom
-    {
-        type            noSlip;
-    }
+endTime         7e-3;
 
-    front
-    {
-        type            noSlip;
-    }
+deltaT          1e-6;
 
-    back
-    {
-        type            noSlip;
-    }
+writeControl    adjustableRunTime;
 
-}
+writeInterval   2e-4;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+adjustTimeStep	yes;
+
+maxDeltaT       1e-4;
+
+maxCo           0.9;
+
+
 
 // ************************************************************************* //

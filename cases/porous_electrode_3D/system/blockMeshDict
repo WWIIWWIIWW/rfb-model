@@ -1,0 +1,128 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1906                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters   0.001;
+
+vertices
+(
+    // Electrode
+    (0 0 0)  // 0
+    (0.4 0 0) // 1
+    (0.4 1 0) // 2
+    (0 1 0) // 3
+    (0 0 23) // 4
+    (0.4 0 23) // 5
+    (0.4 1 23) // 6
+    (0 1 23) // 7
+    
+    // Channel only, shares vertices with electrode
+    (1.4 0 0) // 8
+    (1.4 1 0) // 9
+    (1.4 0 23) // 10
+    (1.4 1 23) // 11
+);
+
+blocks
+(
+    // Electrodo
+    hex (0 1 2 3 4 5 6 7) (4 20 230) simpleGrading (1 1 1)
+    // Channel
+    hex (1 8 9 2 5 10 11 6) (16 20 230) simpleGrading (1 1 1)
+    );
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+           //(0 3 2 1);
+	   (1 2 9 8)
+	);
+    }
+
+    // Electrode inlet wall
+    e_in_wall
+    {
+	type wall;
+	faces
+	(
+	(0 3 2 1)
+	);
+    }
+
+    outlet
+    {
+        type patch;
+        faces
+        (
+            // (4 5 6 7)
+	    (5 10 11 6)
+        );
+    }
+
+    // Electrode outlet wall
+    e_out_wall
+    {
+	type patch;
+	faces
+	(
+	    (4 5 6 7)
+	);
+    }
+
+    top
+    {
+        type wall;
+        faces
+        (
+            // (3 7 6 2)
+	    (2 6 11 9)
+        );
+    }
+
+    bottom
+    {
+        type wall;
+        faces
+        (
+
+            (1 5 4 0)   
+        );
+    }
+
+    front
+    {
+        type wall;
+        faces
+        (
+            (0 4 7 3)
+        );
+    }
+
+    back
+    {
+        type wall;
+        faces
+        (
+            //(1 2 6 5)
+	    (8 9 11 10)
+        );
+    }
+);
+
+// ************************************************************************* //

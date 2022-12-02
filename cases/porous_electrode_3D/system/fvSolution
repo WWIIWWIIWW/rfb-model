@@ -9,51 +9,62 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volVectorField;
-    object      U;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 -1 0 0 0 0];
-
-internalField   uniform (0 0 0);
-
-boundaryField
+solvers
 {
-    // #includeEtc "caseDicts/setConstraintTypes"
-    
-    inlet
+    p
     {
-        type            fixedValue;
-        value           uniform (0 0 1.67); // $internalField;
-    }
-    outlet
-    {
-        //type            pressureInletOutletVelocity;
-        //value           $internalField;
-        type              zeroGradient;
+        solver          GAMG;
+        tolerance       1e-08;
+        relTol          0.01;
+        smoother        GaussSeidel;
     }
 
-    top
+    pFinal
     {
-        type            noSlip;
+        $p;
+        tolerance       1e-08;
+        relTol          0;
     }
 
-    bottom
+    "(U|k|epsilon|omega|R|nuTilda)"
     {
-        type            noSlip;
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        tolerance       1e-06;
+        relTol          0;
     }
 
-    front
+    "(U|k|epsilon|omega|R|nuTilda)Final"
     {
-        type            noSlip;
-    }
-
-    back
-    {
-        type            noSlip;
+        $U;
+        tolerance       1e-05;
+        relTol          0;
     }
 
 }
+
+PIMPLE
+{
+    nOuterCorrectors 1;
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 0;
+    pRefCell        0;
+    pRefValue       0;
+}
+
+PISO
+{
+   nCorrectors 2;
+   nNonOrthogonalCorrectors 0;
+   pRefCell	0;
+   pRefValue	0;
+}
+
 
 // ************************************************************************* //

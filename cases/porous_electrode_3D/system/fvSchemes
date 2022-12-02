@@ -9,51 +9,43 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volVectorField;
-    object      U;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 -1 0 0 0 0];
-
-internalField   uniform (0 0 0);
-
-boundaryField
+ddtSchemes
 {
-    // #includeEtc "caseDicts/setConstraintTypes"
-    
-    inlet
-    {
-        type            fixedValue;
-        value           uniform (0 0 1.67); // $internalField;
-    }
-    outlet
-    {
-        //type            pressureInletOutletVelocity;
-        //value           $internalField;
-        type              zeroGradient;
-    }
-
-    top
-    {
-        type            noSlip;
-    }
-
-    bottom
-    {
-        type            noSlip;
-    }
-
-    front
-    {
-        type            noSlip;
-    }
-
-    back
-    {
-        type            noSlip;
-    }
-
+    default         Euler;
 }
+
+gradSchemes
+{
+    default         Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+    div(phi,U)      Gauss LUST grad(U);
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear uncorrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         uncorrected;
+}
+
 
 // ************************************************************************* //

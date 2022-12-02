@@ -9,49 +9,63 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volVectorField;
-    object      U;
+    class       volScalarField;
+    object      p;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 -1 0 0 0 0];
+dimensions      [0 2 -2 0 0 0 0];
 
-internalField   uniform (0 0 0);
+internalField   uniform 0;
 
 boundaryField
 {
     // #includeEtc "caseDicts/setConstraintTypes"
-    
+
     inlet
     {
-        type            fixedValue;
-        value           uniform (0 0 1.67); // $internalField;
-    }
-    outlet
-    {
-        //type            pressureInletOutletVelocity;
+        //type            fixedFluxPressure;
         //value           $internalField;
         type              zeroGradient;
     }
 
+    // Electrode inlet, no flow
+    e_in_wall
+    {
+        type            fixedFluxPressure;
+    }
+
+    outlet
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    // Electrode outlet, no flow
+    e_out_wall
+    {
+        type            fixedFluxPressure;
+    }
+
+
     top
     {
-        type            noSlip;
+        type            fixedFluxPressure;
     }
 
     bottom
     {
-        type            noSlip;
+        type            fixedFluxPressure;
     }
 
     front
     {
-        type            noSlip;
+        type            fixedFluxPressure;
     }
 
     back
     {
-        type            noSlip;
+        type            fixedFluxPressure;
     }
 
 }

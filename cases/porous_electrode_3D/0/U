@@ -27,6 +27,19 @@ boundaryField
         type            fixedValue;
         value           uniform (0 0 1.67); // $internalField;
     }
+
+    // Electrode inlet, no flow
+    e_in_wall
+    {
+        type            noSlip;
+    }
+
+    // Electrode outlet, no flow
+    e_out_wall
+    {
+        type            noSlip;
+    }
+
     outlet
     {
         //type            pressureInletOutletVelocity;
