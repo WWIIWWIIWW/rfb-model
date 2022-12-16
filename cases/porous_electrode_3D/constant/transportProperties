@@ -18,5 +18,5 @@ FoamFile
 transportModel  Newtonian;
 
 nu              3.7e-6; // V4/V5 electrolyte kinematic viscosity (mu 0.005 Pa s, rho 1350 kg m^-3)
-
+eps		1;
 // ************************************************************************* //
